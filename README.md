@@ -5,7 +5,7 @@ USE: ESP32 16Mb
 
 # remoteXY editor share interface
 
-Project interface: https://remotexy.com/ru/editor/e6144dbbfd8eaeae5f091fcc759ed91b/
+Project interface: https://remotexy.com/ru/editor/0cb00bac5e3057744a5e4adb1ecd73c1/
 
 APP on phone: https://remotexy.com/ru/download/
 
