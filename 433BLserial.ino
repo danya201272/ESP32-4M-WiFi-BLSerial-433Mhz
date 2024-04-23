@@ -280,6 +280,7 @@ for (int send_code = 0; send_code < 4096; send_code++) // цикли переб�
     sprintf(RemoteXY.text_01, "%s is %d", str, send_code);
     if (RemoteXY.select_2 != 1) break;
     checkslider();
+    btcheck();
   }
 }
 
@@ -318,5 +319,6 @@ void came()
     sprintf(RemoteXY.text_01, "%s is %d", str, send_code);
     if (RemoteXY.select_2 != 2) break;
     checkslider();
+    btcheck();
   }
 }
