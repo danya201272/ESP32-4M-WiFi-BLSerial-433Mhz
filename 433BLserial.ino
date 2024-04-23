@@ -24,8 +24,8 @@
 uint8_t RemoteXY_CONF[] =   // 81 bytes
   { 255,4,0,131,0,74,0,17,0,0,0,16,1,200,198,1,1,5,0,10,
   132,86,47,47,48,4,36,31,74,117,109,109,101,114,0,31,74,77,58,79,
-  70,70,0,1,63,86,47,47,0,247,31,83,101,110,100,0,3,8,72,31,
-  112,4,149,26,4,54,156,140,28,144,163,26,67,255,25,201,7,0,2,29,
+  70,70,0,1,63,86,47,47,0,247,31,83,101,110,100,0,3,6,72,31,
+  112,4,149,26,4,46,157,151,22,128,163,26,67,255,25,201,7,0,2,29,
   131 };
   
 // структура определяет все переменные и события вашего интерфейса управления 
@@ -53,6 +53,7 @@ struct {
 BluetoothSerial SerialBT;
 String RxBuffer = "";
 char RxByte;
+String device_name = "Iphone(Egor)";
 
 #include <RCSwitch.h>
 RCSwitch mySwitch = RCSwitch();
@@ -66,6 +67,7 @@ int pulselength;
 int speeds = 4; // Brutforce speed
 unsigned int freq = 1000; // Freq Jummer
 bool jumstate = false;
+bool svstate = false;
 
 void setup()
 {
@@ -78,7 +80,8 @@ void setup()
   char str[] = "A-Sniff,B-Nice,C-Came: Vertical";
   strcpy(RemoteXY.text_01, str);
   RemoteXY.slider_01 = 60;
-  SerialBT.begin("Iphone(Egor)");
+  SerialBT.begin(device_name); //Bluetooth device name
+  SerialBT.setTimeout(10);
 }
 
 void loop ()
@@ -122,64 +125,55 @@ void btcheck()
     }
     Serial.write(RxByte);  
   }
-  if (RxBuffer =="+"){
+  if (RxBuffer == "+"){
     freq=freq+1000;
     SerialBT.print("Jum+: ");
     SerialBT.println( freq);
   }
-  else if (RxBuffer =="-"){
+  else if (RxBuffer == "-"){
     freq=freq-1000;
     SerialBT.print("Jum-: ");
     SerialBT.println( freq);
   }
-  else if (RxBuffer =="stop"){
+  else if (RxBuffer == "stop"){
     RemoteXY.select_2=3;
     RemoteXY.btglush=0;
   }
-  else if (RxBuffer =="nice"){
+  else if (RxBuffer == "nice"){
     RemoteXY.select_2=1;
   }
-  else if (RxBuffer =="came"){
+  else if (RxBuffer == "came"){
     RemoteXY.select_2=2;
   }
-  else if (RxBuffer =="snif"){
+  else if (RxBuffer == "snif"){
     RemoteXY.select_2=0;
   }
-  else if (RxBuffer =="jON"){
+  else if (RxBuffer == "jON"){
     RemoteXY.btglush=1;
-    SerialBT.print("Jum: ");
-    SerialBT.println( freq);
   }
-  else if (RxBuffer =="jOFF"){
+  else if (RxBuffer == "jOFF"){
     RemoteXY.btglush=0;
   }
-  else if (RxBuffer =="send"){
+  else if (RxBuffer == "send"){
     RemoteXY.sendcodes=1;
     RemoteXY.sendcodes=0;
   }
-  else if (RxBuffer =="1"){
-    RemoteXY.slider_01=0;
-  }
-  else if (RxBuffer =="2"){
-    RemoteXY.slider_01=30;
-  }
-  else if (RxBuffer =="4"){
-    RemoteXY.slider_01=60;
-  }
-  else if (RxBuffer =="6"){
-    RemoteXY.slider_01=99;
-  }
-  else if (RxBuffer =="10"){
-    RemoteXY.slider_01=100;
-  }
-  else if (RxBuffer =="help"){
-    SerialBT.println("Menu: + - jON jOFF send came nice snif stop 1 2 4 6 10");
+  else if (RxBuffer == "help"){
+    SerialBT.println("Menu: + - jON jOFF send came nice snif stop");
   }
 }
 
 void jummers()
 {
   if(RemoteXY.btglush!=0) {
+    if (svstate == false){
+      sentsv();
+      svstate = true;
+      char str[] = "JM:ON";
+      sprintf(RemoteXY.text_01, "%s is %d Hz", str, freq);
+      SerialBT.print("JM: ");
+      SerialBT.println( freq);
+    }
     tone(txPin, freq);
     jumstate = true;
   }
@@ -187,6 +181,9 @@ void jummers()
     if (jumstate == true){
       noTone(txPin);
       jumstate = false;
+      svstate = false;
+      char str[] = "JM:OFF";
+      strcpy(RemoteXY.text_01, str);
     }
   }
 }
@@ -210,6 +207,23 @@ void checkslider()
     speeds = 10;
     RemoteXY_delay(3500);
   }
+}
+
+void sentsv() // Saves codes
+{
+  char str[] = "Send Saves Codes";
+  strcpy(RemoteXY.text_01, str);
+  mySwitch.setProtocol(11);
+  mySwitch.setPulseLength(320);
+  mySwitch.send(1796, 12);
+  mySwitch.send(1796, 12);
+  mySwitch.send(1796, 12);
+  mySwitch.send(1796, 12);//Belka
+  RemoteXY_delay(1);
+  mySwitch.send(2300, 12);
+  mySwitch.send(2300, 12);
+  mySwitch.send(2300, 12);
+  mySwitch.send(2300, 12);//Belka
 }
 
 void send()
@@ -279,6 +293,7 @@ for (int send_code = 0; send_code < 4096; send_code++) // цикли переб�
     char str[] = "Nice";
     sprintf(RemoteXY.text_01, "%s is %d", str, send_code);
     if (RemoteXY.select_2 != 1) break;
+    SerialBT.println(send_code);
     checkslider();
     btcheck();
   }
@@ -318,6 +333,7 @@ void came()
     char str[] = "Came";
     sprintf(RemoteXY.text_01, "%s is %d", str, send_code);
     if (RemoteXY.select_2 != 2) break;
+    SerialBT.println(send_code);
     checkslider();
     btcheck();
   }
