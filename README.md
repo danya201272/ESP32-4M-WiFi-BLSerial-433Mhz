@@ -21,6 +21,8 @@ APP pass: #define REMOTEXY_ACCESS_PASSWORD
 
 Serial (115200)
 
+Slider: Speed Brutforce 10-slow, 1-Fast
+
 Set choice mode - (A-Sniff,B-Nice,C-Came: Vertical)
 
 BTMENU: help + - jON jOFF send came nice snif stop 1 2 4 6 10
