@@ -158,9 +158,6 @@ void btcheck()
     RemoteXY.sendcodes=1;
     RemoteXY.sendcodes=0;
   }
-  else if (RxBuffer == "help"){
-    SerialBT.println("Menu: + - jON jOFF send came nice snif stop");
-  }
 }
 
 void jummers()
