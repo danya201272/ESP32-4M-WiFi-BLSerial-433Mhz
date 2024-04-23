@@ -19,7 +19,7 @@ Wifi-pass: #define REMOTEXY_WIFI_PASSWORD
 
 APP pass: #define REMOTEXY_ACCESS_PASSWORD
 
-Serial (115200) If more received ,set lower
+Serial (115200)
 
 Set choice mode - (A-Sniff,B-Nice,C-Came: Vertical)
 
