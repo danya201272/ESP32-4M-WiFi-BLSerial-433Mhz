@@ -1,11 +1,11 @@
-# ESP32-16M-WiFi-BLSerial-433Mhz
+# ESP32-4M-WiFi-BLSerial-433Mhz
 ESP32 with app interface remoteXY and grab and sent code. Bruteforce Came and Nice. Have a Jammer 433. Bluetooth monitor + WiFi remote
 
-USE: ESP32D 16Mb
+USE: ESP32 4Mb
 
 Arduino:
 
-![image](https://github.com/danya201272/ESP32-16M-WiFi-BLSerial-433Mhz/assets/36302863/207f6f06-1db5-46f5-9dac-2edf82e2ee2f)
+![image](https://github.com/danya201272/ESP32-16M-WiFi-BLSerial-433Mhz/assets/36302863/93c16dd3-7e37-4968-bc5e-26336534dadf)
 
 # remoteXY editor share interface
 
