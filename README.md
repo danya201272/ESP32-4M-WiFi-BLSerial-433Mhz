@@ -27,7 +27,7 @@ Slider: Speed Brutforce 10-slow, 1-Fast
 
 Set choice mode - (A-Sniff,B-Nice,C-Came: Vertical)
 
-BTMENU: help + - jON jOFF send came nice snif stop
+BTMENU: + - jON jOFF send came nice snif stop
 
 # Gallery
 ![image](https://github.com/danya201272/ESP32-4M-WiFi-BLSerial-433Mhz/assets/36302863/4ddf9265-e854-46ed-a9be-42f7152c86f0)
